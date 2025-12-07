@@ -5,7 +5,6 @@ A network load-testing toolkit by Sahikk (sahikk67)
 ![Python](https://img.shields.io/badge/Python-3.8+-blue)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
-![OSINT](https://img.shields.io/badge/OSINT-Bangladesh-red)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Termux-orange)
 
 ---
