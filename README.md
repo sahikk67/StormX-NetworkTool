@@ -8,6 +8,21 @@ A network load-testing toolkit by Sahikk (sahikk67)
 ![OSINT](https://img.shields.io/badge/OSINT-Bangladesh-red)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20Termux-orange)
 
+---
+
+Table of contents
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage & Examples](#usage--examples)
+- [Flags / Options Reference](#flags--options-reference)
+- [Notes & Limitations](#notes--limitations)
+- [Contributing](#contributing)
+- [Author & Contact](#author--contact)
+- [License](#license)
+
+---
+
 IMPORTANT: This project is intended only for authorized network load testing, research, and defensive/security education. Do NOT use this software to attack systems you do not own or do not have explicit permission to test. Unauthorized use of this software may be illegal and unethical. See the "Responsible Use & Legal" section below.
 
 ## Overview
@@ -106,7 +121,7 @@ Contributions are welcome! If you want to improve this project, feel free to hel
 - Make sure new features include minimal documentation
 
 ## License
-MIT —
+MIT — https://github.com/sahikk67/StormX-NetworkTool/blob/main/LICENSE
 
 ## Author & Contact
 Tool by: Sahikk (sahikk67)
